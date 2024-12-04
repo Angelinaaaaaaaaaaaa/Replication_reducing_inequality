@@ -4,18 +4,26 @@
 
 import time
 from itertools import product, combinations
-
-import os
-
-os.environ['GRB_WLSACCESSID'] = 'ccc2c36a-db14-4956-b2e3-60adc45e9957'
-os.environ['GRB_WLSSECRET'] = '1e0e3dbf-7933-44dc-8f81-e0482ded7ac8'
-os.environ['GRB_LICENSEID'] = '2586688'
-
 import numpy as np
 import pandas as pd
 import gurobipy as gb
 from sklearn.linear_model import LinearRegression
 
+# WLS credentials
+WLSACCESSID = 'ccc2c36a-db14-4956-b2e3-60adc45e9957'
+WLSSECRET = '1e0e3dbf-7933-44dc-8f81-e0482ded7ac8'
+LICENSEID = 2586688
+
+# Create the Gurobi environment with parameters
+env = gb.Env(empty=True)  # Start with an empty environment
+env.setParam('WLSACCESSID', WLSACCESSID)
+env.setParam('WLSSECRET', WLSSECRET)
+env.setParam('LICENSEID', LICENSEID)
+env.start() 
+
+# import os
+
+# os.environ["GRB_LICENSE_FILE"] = "/home/ruz039/private/Replication_reducing_inequality/gurobi.lic"
 
 for SOCIAL_CATEGORIES, NO_HARM, EXPERIMENT_DESCRIPTION in [
     (['A', 'B', 'C', 'D', 'E', 'F', 'G'], False, '7_disagg'),
@@ -158,7 +166,7 @@ for SOCIAL_CATEGORIES, NO_HARM, EXPERIMENT_DESCRIPTION in [
         print('=' * 80)
         print('=' * 80)
         print(f'Running optimization for budget={BUDGET}')
-        model = gb.Model()
+        model = gb.Model(env=env)
 
         interventions = model.addVars(
             list(range(NUM_SCHOOLS)),

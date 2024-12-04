@@ -11,6 +11,18 @@ import gurobipy as gb
 from sklearn.linear_model import LinearRegression
 
 
+# WLS credentials
+WLSACCESSID = 'ccc2c36a-db14-4956-b2e3-60adc45e9957'
+WLSSECRET = '1e0e3dbf-7933-44dc-8f81-e0482ded7ac8'
+LICENSEID = 2586688
+
+# Create the Gurobi environment with parameters
+env = gb.Env(empty=True)  # Start with an empty environment
+env.setParam('WLSACCESSID', WLSACCESSID)
+env.setParam('WLSSECRET', WLSSECRET)
+env.setParam('LICENSEID', LICENSEID)
+env.start() 
+
 SOCIAL_CATEGORIES = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
 for TAU_VALUE in [0.566, None]:
@@ -73,8 +85,8 @@ for TAU_VALUE in [0.566, None]:
     NEIGHBOR_DISTANCE_MATRIX = np.load('neighbor_distance_matrix.npy')
 
     NUM_SCHOOLS = X.shape[0]
-    weight_df = pd.read_csv('params_7_disagg.csv', index_col=0)
-    WEIGHT_MATRIX = weight_df.values
+    # weight_df = pd.read_csv('params_7_disagg.csv', index_col=0)
+    # WEIGHT_MATRIX = weight_df.values
     NUM_NEIGHBORS = NEIGHBOR_INDEX_MATRIX.shape[1]
     intervention_sample_spaces = [(0, 1)] * NUM_NEIGHBORS
     POSSIBLE_INTERVENTIONS_MATRIX = np.array(list(
@@ -84,7 +96,7 @@ for TAU_VALUE in [0.566, None]:
 
     BUDGET = 100
 
-    NUM_CATEGORIES = WEIGHT_MATRIX.shape[0]
+    NUM_CATEGORIES = 28
     CATEGORIES = list(range(NUM_CATEGORIES))
     CATEGORY_PAIRS = list(combinations(CATEGORIES, 2))
 
@@ -145,7 +157,7 @@ for TAU_VALUE in [0.566, None]:
 
     def optimize_interventions(tau_value):
         print(f'Running optimization for tau={tau_value}')
-        model = gb.Model()
+        model = gb.Model(env = env)
 
         interventions = model.addVars(
             list(range(NUM_SCHOOLS)),
