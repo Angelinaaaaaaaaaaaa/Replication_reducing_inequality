@@ -9,6 +9,3 @@ To generate figures and print results from the paper, run `plot_results.ipynb`.
 To re-run optimization problems, run `optimize_disaggregated.py` and `optimize.py` in that order.
 New result files (`.npy`) will be output upon re-running. Note that re-running is slow.
 Additional documentation and significant code restructuring forthcoming!
-
-
-
