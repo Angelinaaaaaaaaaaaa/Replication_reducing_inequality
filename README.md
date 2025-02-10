@@ -1,3 +1,9 @@
+# Addressing Voter Turnout Disparities through Data-Driven Resource Allocation
+DSC180 Project by Cici and Angelina
+# WI25
+
+
+# FA24
 # paper1: Replication-Active-learning-for-optimal-intervention-design-in-causal-models
 DSC180 Project by Cici and Angelina 
 
